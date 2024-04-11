@@ -13,8 +13,8 @@
  * obsoselete, ah well.  It took a lot of resillience to solidify my understanding, 
  * but I'm comfortable enough with `extern` and include guards to explain to a peer
 ****/
-#ifndef TEMP_UTILS_H
-#define TEMP_UTILS_H
+#ifndef TMP36_UTILS_H
+#define TMP36_UTILS_H
 
 extern const int pin_temp;            // pin (A2) reading VOUT pin of TMP36
 extern const int MOCK_WIND_MAX_SPEED; // Since we don't have an anemometer
@@ -66,7 +66,6 @@ double convertFarToCel(double temp_farenheit);
 /// @return the calculated wind chill
 double calculateWindChill(double windSpeed, double airTemp = stored_temp);
 
-int mockRandomWindSpeed(int speedLimit = MOCK_WIND_MAX_SPEED);
 
 /*  [         I/O RELATED FUNCTIONS          ] */
 /// @brief Reads pin_temp to get an analog reading from the TMP36
@@ -81,4 +80,5 @@ double getTemperatureInUnit(TemperatureUnit unit);
 
 /// @brief obtains a new reading on the TMP36, in a loop()-friendly format 
 void checkTemp();
+
 #endif

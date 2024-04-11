@@ -12,25 +12,18 @@
 
 extern const int pin_btn_left;   // pin connected to first button (D2)
 extern const int pin_btn_right;   // pin connected to button furthest from board (D3)
+extern bool awaiting_first_press; // whether or not btn has been pressed since RESET
 
 /// @brief sets the PinMode of the button pins to INPUT_PULLUP
-void initButtonPins();
-
-/// @brief checks if the left button is currently being pressed, 
-/// without performing any debounce checks
-/// @return true or false
-bool isLeftButtonActive();
+void initButtonPin();
 
 /// @brief checks if the right button is currently being pressed, 
 /// without performing any debounce checks
 /// @return true or false
-bool isRightButtonActive();
-
-/// @brief checks whether or not the left button is pressed
-bool isLeftReceivingPureInput();
+bool isButtonActive();
 
 /// @brief checks whether or not the right button is pressed
-bool isRightReceivingPureInput();
+bool isReceivingPureInput();
 
 #endif
 

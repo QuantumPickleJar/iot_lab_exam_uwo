@@ -23,7 +23,7 @@
  * up again in the future
 */
 #include "cmath"
-#include "temp_utils.h" 
+#include "tmp36_utils.h" 
 #include "Particle.h"
 
 // default to Fahrenheit, because Americans 
@@ -42,6 +42,8 @@ void initTemperaturePins()
 /// @param unit The desired temperature unit
 void setDefaultTempUnit(TemperatureUnit unit) { enforcedUnit = unit; }
 
+/// @brief returns the last stored temperature 
+/// @sa checkTemp
 double getTemperature() { return stored_temp; }
 
 /// @brief QoL method that provides temperature in a specified unit

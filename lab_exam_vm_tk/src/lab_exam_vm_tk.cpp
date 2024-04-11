@@ -8,6 +8,7 @@
 
 // Include Particle Device OS APIs
 #include "Particle.h"
+#include "tmp36_utils.h"
 
 // Let Device OS manage the connection to the Particle Cloud
 SYSTEM_MODE(AUTOMATIC);
@@ -19,17 +20,32 @@ SYSTEM_THREAD(ENABLED);
 // View logs with CLI using 'particle serial monitor --follow'
 SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
+/// These variables are for convenience and add a bit of overhead
+double p2_humidity, p2_temperature;
+bool awaiting_first_press;
+// static double 
+
 // setup() runs once, when the device is first turned on
 void setup() {
   // Put initialization like pinMode and begin functions here
+  initButtonPin();
 }
 
 // loop() runs over and over again, as quickly as it can execute.
 void loop() {
-  // The core of your code will likely live here.
+  if(awaiting_first_press) { 
+    
+  // Handle first-time press, setting pilot_push_set appropriately
+  //     set initial heat index
+  
+  // else after first-time-run:
+  checkTemp();  // instruct the TMP36 to perform a new read
+  p2_temperature = getTemperatureInUnit(Celsius);
+  p2_humidity =  /*getHumiditySHT40*/;
+  // temp_utils -> write and call a getHeatIndex function
+  
+  // 
+  
 
-  // Example: Publish event to cloud every 10 seconds. Uncomment the next 3 lines to try it!
-  // Log.info("Sending Hello World to the cloud!");
-  // Particle.publish("Hello world!");
-  // delay( 10 * 1000 ); // milliseconds and blocking - see docs for more info!
+  } 
 }
