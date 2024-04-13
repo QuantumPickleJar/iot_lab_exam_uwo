@@ -47,11 +47,34 @@ Thumbs.db
 
 # C Linker output
 *.map
+=
+# Precompiled Headers
+*.gch
+*.pch
 
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app=
 # C Debug files
 *.dSYM/
 *.su
 *.idb
-*.pdb
+*.pdb=
 lab_exam_vm_tk/nul
 lab_exam_vm_tk/.vscode/settings.json
