@@ -20,7 +20,6 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 const int buzzer = A2;
 
 double p2_humidity, p2_temperature, initialHeatIndex, heatIndex;
-bool awaiting_first_press;
 
 void playAsc() {
 
@@ -114,6 +113,7 @@ void setup() {
 }
 
 void loop() {
+  Serial.println("");
 
   //checking to see if we are not waiting for the button press
   if(!awaiting_first_press) { 
@@ -145,10 +145,10 @@ void loop() {
 
   //else see if button is pressed and set stuff or just keep waiting
   } else {
-
+    Serial.println("Checking for input...");
     if(isReceivingPureInput()) {
 
-      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!9510541!!!!!
       //set the humidity and temperature here
       //p2_temperature = ...;
       //p2_humidity = ...;
@@ -157,12 +157,16 @@ void loop() {
       //this sets the inital heat index to the heat 
       //index of when the button was pressed for the first time
       initialHeatIndex = calcHeatIndex(p2_temperature, p2_humidity);
+      Serial.println("Heat index: ");
 
+      Serial.print(initialHeatIndex);
       //setting the wait for first press to be false because we are no longer waiting.
       awaiting_first_press = false;
-
-
+    } else {
+    Serial.println("No input detected.");
     }
 
-  } 
+  }
+  Serial.println("Systems test");
+  delay(500);
 }
