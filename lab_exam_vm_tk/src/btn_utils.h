@@ -10,7 +10,7 @@
 #ifndef BTN_UTILS_H
 #define BTN_UTILS_H
 
-extern const int pin_btn_left;   // pin connected to first button (D2)
+extern const int pin_btn;   // pin connected to first button (D2)
 extern const int pin_btn_right;   // pin connected to button furthest from board (D3)
 extern bool awaiting_first_press; // whether or not btn has been pressed since RESET
 
