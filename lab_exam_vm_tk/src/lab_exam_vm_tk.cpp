@@ -1,7 +1,7 @@
-/* 
+/*
  * Project myProject
  * Author: Your Name
- * Date: 
+ * Date:
  * For comprehensive documentation and examples, please visit:
  * https://docs.particle.io/firmware/best-practices/firmware-template/
  */
@@ -38,7 +38,7 @@ void playAsc() {
   delay(50);
   noTone(buzzer);
   delay(50);
-  
+
   tone(buzzer, 698);
   delay(50);
   noTone(buzzer);
@@ -48,7 +48,6 @@ void playAsc() {
   delay(50);
   noTone(buzzer);
   delay(50);
-
 }
 
 void playDesc() {
@@ -77,7 +76,6 @@ void playDesc() {
   delay(50);
   noTone(buzzer);
   delay(50);
-
 }
 
 void playSame() {
@@ -106,7 +104,6 @@ void playSame() {
   delay(50);
   noTone(buzzer);
   delay(50);
-
 }
 
 double getHeatIndex(double temperature, double humidity) {
@@ -139,7 +136,6 @@ double getHeatIndex(double temperature, double humidity) {
 }
 
 void setup() {
-
   pinMode(buzzer, AN_OUTPUT);
 
   //setting waiting for press to be true because we are waiting for it
