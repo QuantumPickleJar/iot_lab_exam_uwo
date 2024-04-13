@@ -29,6 +29,7 @@
 // default to Fahrenheit, because Americans 
 TemperatureUnit enforcedUnit = Fahrenheit; // for singular conversion jobs
 
+
 const int pin_temp = A2;
 const int MOCK_WIND_MAX_SPEED = 20;     // desired ceiling of faked wind speed
 double stored_temp;
