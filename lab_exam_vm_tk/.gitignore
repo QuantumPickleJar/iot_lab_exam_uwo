@@ -53,4 +53,5 @@ Thumbs.db
 *.su
 *.idb
 *.pdb
-lab_exam_vm_tk/nul
+nul/
+.vscode/settings.json
