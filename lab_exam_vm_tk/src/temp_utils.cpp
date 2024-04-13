@@ -1,9 +1,11 @@
 /**
- * @date: 2024-03-22
+ * @date: 2024-04-13
  * @author: Vincent Morrill
+ * @version 2.0 - swapped TMP36 for SHT40, left functions intact
  * @brief:
  * Series of temperature reading functions centered around the TMP36 (3 pin version).
  * Includes some mock wind chill computations for testing
+ * 
  * @bug <<< Large Wind Chills >>>
  * I think my system for storing a desired unit ended up backfiring, because the wind chill
  * coming out doesn't hold up mathematically.  Ex: At ~76F, with a mph wind it calculates 21.3F.
@@ -23,7 +25,7 @@
  * up again in the future
 */
 #include "cmath"
-#include "tmp36_utils.h" 
+#include "temp_utils.h" 
 #include "Particle.h"
 
 // default to Fahrenheit, because Americans 
@@ -56,6 +58,33 @@ double getTemperatureInUnit(TemperatureUnit desiredUnit) {
   return convertedTemp;
 }
 
+double calcHeatIndex(double temperature, double humidity) {\
+  //initializing the variables for the equation
+  double c1, c2, c3, c4, c5, c6, c7, c8, c9;
+  c1 = -42.379;
+  c2 = 2.04901523;
+  c3 = 10.14333127;
+  c4 = -.22475541;
+  c5 = -6.83783 * pow(10,-3);
+  c6 = -5.481717 * pow(10,-2);
+  c7 = 1.22874 * pow(10,-3);
+  c8 = 8.5282 * pow(10,-4);
+  c9 = -1.99 * pow(10,-6);
+
+  //heat index equation
+  double hI = c1 + (c2 * temperature) 
+                 + (c3 * humidity) 
+                 + (c4 * temperature * humidity) 
+                 + (c5 * pow(temperature, 2)) 
+                 + (c6 * pow(humidity, 2)) 
+                 + (c7 * pow(temperature, 2) * humidity) 
+                 + (c8 * temperature * pow(humidity, 2)) 
+                 + (c9 * pow(temperature, 2) * pow(humidity, 2));
+
+  //returns the heat index
+  return hI;
+
+}
 
 /// @brief converts a temperature from one unit to another
 /// @param temperature The temperature reading in Celsius

@@ -1,6 +1,7 @@
 /****
  * @author Vincent Morrill (vince.codefactory@outlook.com)
- * @date 2024-03-22
+ * @date 2024-04-13
+ * @version 2.0 - swapped TMP36 for SHT40, left functions intact
  * @bug << Rounding >>
  * I didn't program any actual rounding in, so don't be surprised if you tried
  * "checking my math"!  It'll be off by a margin not exceeding 5 degrees per unit
@@ -13,8 +14,8 @@
  * obsoselete, ah well.  It took a lot of resillience to solidify my understanding, 
  * but I'm comfortable enough with `extern` and include guards to explain to a peer
 ****/
-#ifndef TMP36_UTILS_H
-#define TMP36_UTILS_H
+#ifndef TEMP_UTILS_H
+#define TEMP_UTILS_H
 
 extern const int pin_temp;            // pin (A2) reading VOUT pin of TMP36
 extern const int MOCK_WIND_MAX_SPEED; // Since we don't have an anemometer
@@ -74,6 +75,12 @@ double getTMP36VOutMv();
 
 /// @brief returns the temperature in the desired unit
 double getTemperature();
+
+/// @brief Calculates the heat index given temperature and relative Humidity
+/// @param temperature 
+/// @param humidity 
+/// @return 
+double calcHeatIndex(double temperature, double humidity);
 
 /// @brief returns the temperature in the supplied unit
 double getTemperatureInUnit(TemperatureUnit unit);
