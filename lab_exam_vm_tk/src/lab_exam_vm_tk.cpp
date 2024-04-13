@@ -1,7 +1,7 @@
-/* 
+/*
  * Project myProject
  * Author: Your Name
- * Date: 
+ * Date:
  * For comprehensive documentation and examples, please visit:
  * https://docs.particle.io/firmware/best-practices/firmware-template/
  */
@@ -38,7 +38,7 @@ void playAsc() {
   delay(50);
   noTone(buzzer);
   delay(50);
-  
+
   tone(buzzer, 698);
   delay(50);
   noTone(buzzer);
@@ -48,7 +48,6 @@ void playAsc() {
   delay(50);
   noTone(buzzer);
   delay(50);
-
 }
 
 void playDesc() {
@@ -77,7 +76,6 @@ void playDesc() {
   delay(50);
   noTone(buzzer);
   delay(50);
-
 }
 
 void playSame() {
@@ -106,31 +104,31 @@ void playSame() {
   delay(50);
   noTone(buzzer);
   delay(50);
-
 }
 
 void setup() {
   // Put initialization like pinMode and begin functions here
-  //initButtonPin();
-  pinMode(buzzer, OUTPUT);
-
+  // initButtonPin();
+  pinMode(buzzer, AN_OUTPUT);
 }
 
 // loop() runs over and over again, as quickly as it can execute.
 void loop() {
-  if(awaiting_first_press) { 
-  // Handle first-time press, setting pilot_push_set appropriately
-  //     set initial heat index
-  
-  // else after first-time-run:
- checkTemp();  // instruct the TMP36 to perform a new read
-  p2_temperature = getTemperatureInUnit(Celsius);
-  //p2_humidity =  /*getHumiditySHT40*/;
-  // temp_utils -> write and call a getHeatIndex function
-  } else if(isReceivingPureInput()) {
-    checkTemp();  // instruct the TMP36 to perform a new read
+  if (awaiting_first_press) {
+    // Handle first-time press, setting pilot_push_set appropriately
+    //     set initial heat index
+
+    // else after first-time-run:
+    checkTemp(); // instruct the TMP36 to perform a new read
     p2_temperature = getTemperatureInUnit(Celsius);
-    p2_humidity =  /*getHumiditySHT40*/;
+    // p2_humidity =  /*getHumiditySHT40*/;
+    //  temp_utils -> write and call a getHeatIndex function
+  }
+  else if (isReceivingPureInput()) {
+    checkTemp(); // instruct the TMP36 to perform a new read
+    p2_temperature = getTemperatureInUnit(Celsius);
+    // p2_humidity =  /*getHumiditySHT40*/;
+
     // temp_utils -> write and call a getHeatIndex function
   }
 }
