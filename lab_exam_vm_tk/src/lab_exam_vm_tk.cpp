@@ -20,6 +20,7 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 const int buzzer = A2;
 
 double p2_humidity, p2_temperature, initialHeatIndex, heatIndex;
+extern bool awaiting_first_press;
 
 void playAsc() {
 
@@ -109,11 +110,14 @@ void setup() {
   pinMode(buzzer, AN_OUTPUT);
 
   //setting waiting for press to be true because we are waiting for it
-  awaiting_first_press = true;
+  // awaiting_first_press = true;
+  initButtonPin();
 }
 
 void loop() {
-  Serial.println("");
+  Serial.println("Is bool valid?");
+
+  Serial.print(awaiting_first_press);
 
   //checking to see if we are not waiting for the button press
   if(!awaiting_first_press) { 
@@ -161,7 +165,7 @@ void loop() {
 
       Serial.print(initialHeatIndex);
       //setting the wait for first press to be false because we are no longer waiting.
-      awaiting_first_press = false;
+      // awaiting_first_press = false;
     } else {
     Serial.println("No input detected.");
     }

@@ -14,11 +14,13 @@
 
 const int pin_btn = D2;   // pin connected to first button (D2)
 // const int pin_btn_right = D3;   // pin connected to button furthest from board (D3)
+bool awaiting_first_press;
 
 uint32_t msSinceLastPress;          // Tracks # of ms since last verified push
 const int DEBOUNCE_DELAY_MS = 200;  // how many ms to wait before checking
 
-/// @brief sets the pins mode of the pins wired to the button
+/// @brief sets the pins mode of the pins wired to the button.
+/// Also sets awaiting_first_press to false as we assume a new run
 void initButtonPin() {
   awaiting_first_press = false;
   pinMode(pin_btn, INPUT_PULLUP); // intialize button pin mode to pull-up resistor

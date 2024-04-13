@@ -32,7 +32,7 @@
 TemperatureUnit enforcedUnit = Fahrenheit; // for singular conversion jobs
 
 
-const int pin_temp = A2;
+// const int pin_temp = A2;    not used here
 const int MOCK_WIND_MAX_SPEED = 20;     // desired ceiling of faked wind speed
 double stored_temp;
 
