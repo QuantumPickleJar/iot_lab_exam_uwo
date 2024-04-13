@@ -9,6 +9,7 @@
 // Include Particle Device OS APIs
 #include "Particle.h"
 #include "tmp36_utils.h"
+#include "btn_utils.h"
 
 // Let Device OS manage the connection to the Particle Cloud
 SYSTEM_MODE(AUTOMATIC);
@@ -34,18 +35,14 @@ void setup() {
 // loop() runs over and over again, as quickly as it can execute.
 void loop() {
   if(awaiting_first_press) { 
-    
   // Handle first-time press, setting pilot_push_set appropriately
   //     set initial heat index
   
   // else after first-time-run:
-  checkTemp();  // instruct the TMP36 to perform a new read
-  p2_temperature = getTemperatureInUnit(Celsius);
-  p2_humidity =  /*getHumiditySHT40*/;
-  // temp_utils -> write and call a getHeatIndex function
-  
-  // 
-  
-
-  } 
+  } else if(isReceivingPureInput()) {
+    checkTemp();  // instruct the TMP36 to perform a new read
+    p2_temperature = getTemperatureInUnit(Celsius);
+    p2_humidity =  /*getHumiditySHT40*/;
+    // temp_utils -> write and call a getHeatIndex function
+  }
 }
