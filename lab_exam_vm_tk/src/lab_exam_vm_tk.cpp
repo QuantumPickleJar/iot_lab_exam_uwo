@@ -10,25 +10,109 @@
 #include "Particle.h"
 #include "tmp36_utils.h"
 
-// Let Device OS manage the connection to the Particle Cloud
 SYSTEM_MODE(AUTOMATIC);
-
-// Run the application and system concurrently in separate threads
 SYSTEM_THREAD(ENABLED);
 
-// Show system, cloud connectivity, and application logs over USB
-// View logs with CLI using 'particle serial monitor --follow'
 SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
 /// These variables are for convenience and add a bit of overhead
+const int buzzer = A2;
+
 double p2_humidity, p2_temperature;
 bool awaiting_first_press;
-// static double 
 
-// setup() runs once, when the device is first turned on
+void playAsc() {
+
+  tone(buzzer, 523);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 587);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 659);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+  
+  tone(buzzer, 698);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 784);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+}
+
+void playDesc() {
+
+  tone(buzzer, 784);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 698);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 659);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 587);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 523);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+}
+
+void playSame() {
+
+  tone(buzzer, 523);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 523);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 523);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 523);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+  tone(buzzer, 523);
+  delay(50);
+  noTone(buzzer);
+  delay(50);
+
+}
+
 void setup() {
   // Put initialization like pinMode and begin functions here
   //initButtonPin();
+  pinMode(buzzer, OUTPUT);
+
 }
 
 // loop() runs over and over again, as quickly as it can execute.
