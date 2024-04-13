@@ -28,7 +28,7 @@ bool awaiting_first_press;
 // setup() runs once, when the device is first turned on
 void setup() {
   // Put initialization like pinMode and begin functions here
-  initButtonPin();
+  //initButtonPin();
 }
 
 // loop() runs over and over again, as quickly as it can execute.
@@ -41,7 +41,7 @@ void loop() {
   // else after first-time-run:
   checkTemp();  // instruct the TMP36 to perform a new read
   p2_temperature = getTemperatureInUnit(Celsius);
-  p2_humidity =  /*getHumiditySHT40*/;
+  //p2_humidity =  /*getHumiditySHT40*/;
   // temp_utils -> write and call a getHeatIndex function
   
   // 
