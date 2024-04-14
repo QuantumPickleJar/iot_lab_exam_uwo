@@ -141,6 +141,8 @@ void initScreen() {
 }
 
 
+// <<<<<<< HEAD
+
 /// @brief Prints the temperature information to the OLED screen
 void printTempInfo() {
   resetScreen();      // clear the display  
