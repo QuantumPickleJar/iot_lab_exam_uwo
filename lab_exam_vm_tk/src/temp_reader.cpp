@@ -2,8 +2,10 @@
  * Project myProject
  * Author: Your Name
  * Date:
- * For comprehensive documentation and examples, please visit:
- * https://docs.particle.io/firmware/best-practices/firmware-template/
+ * Bugs:
+ * Ubidots will not allow multiple Tokens to be created (at least in our case)
+ * so we had to have one member remove their yet-to-be-graded token from Lab8
+ * to be used here.
  */
 
 // Include Particle Device OS APIs
@@ -11,11 +13,17 @@
 #include "temp_utils.h"
 #include "btn_utils.h"
 #include "Adafruit_SSD1306_RK.h"
-// #include "Adafruit_SHT4x.h"
+#include "Ubidots.h"
+#include "secrets.h"
 
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
+
+#define UBIVAR_TEMP_F "temp_f" 
+#define UBIVAR_HUMIDITY "humidity"
+#define UBIVAR_HEAT_INDEX "heat_index"
+
 
 SYSTEM_MODE(AUTOMATIC);
 SYSTEM_THREAD(ENABLED);
@@ -25,9 +33,11 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 // extern Adafruit_SHT4x sht4;  // defined in temp_utils
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+Ubidots ubidots(TOKEN, UBI_HTTP);
+
 /// These variables are for convenience and add a bit of overhead
-const int buzzer = A2;
-const int SERIAL_DELAY_MS = 5000;
+const int pin_buzzer = A2;
+const int SERIAL_DELAY_MS = 10000;
 
 /// @brief timer that allows the cycle to continue without being blocked by a delay call
 uint32_t msIdleTime;    
@@ -39,89 +49,89 @@ extern bool awaiting_first_press;
 /// @brief plays an ascending tone of chirps on the buzzer
 void playAsc() {
 
-  tone(buzzer, 523);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 523);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 587);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 587);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 659);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 659);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 698);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 698);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 784);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 784);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 }
 
 /// @brief plays a descending tone of chirps on the buzzer
 void playDesc() {
 
-  tone(buzzer, 784);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 784);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 698);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 698);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 659);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 659);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 587);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 587);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 523);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 523);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 }
 
 /// @brief plays a static note five times
 /// @todo add an optional parameter
 void playSame() {
 
-  tone(buzzer, 523);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 523);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 523);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 523);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 523);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 523);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 523);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 523);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 
-  tone(buzzer, 523);
-  delay(50);
-  noTone(buzzer);
-  delay(50);
+  tone(pin_buzzer, 523);
+  delay(100);
+  noTone(pin_buzzer);
+  delay(100);
 }
 
 void resetScreen(){ 
@@ -140,8 +150,6 @@ void initScreen() {
   display.display();
 }
 
-
-
 /// @brief Prints the temperature information to the OLED screen
 void printTempInfo() {
   resetScreen();      // clear the display  
@@ -159,31 +167,23 @@ void setup() {
     for(;;);  // halt!
   } 
 
-  pinMode(buzzer, AN_OUTPUT);
-
-  //setting waiting for press to be true because we are waiting for it
-  // awaiting_first_press = true;
+  pinMode(pin_buzzer, OUTPUT);
   initSHT40();
   initButtonPin();
   initScreen();
 }
 
 void loop() {
-  // Serial.println("Is bool valid?: " + (String)awaiting_first_press);
-  // TODO: print "Waiting: to the screen"
-  //checking to see if we are not waiting for the button press
   sensors_event_t humidity, temp;
   
+  //checking to see if we are not waiting for the button press
   if(!awaiting_first_press) {
- 
-    // TODO: resume from here
-    //get and set the temp
     uint32_t timestamp = millis();
     sht4.getEvent(&humidity, &temp);
     timestamp = millis() - timestamp;
     
-    //get and set the humidity
-    p2_temperature = temp.temperature;
+    //get and set the temp + humidity
+    p2_temperature = convertTemperature(temp.temperature, Celsius, Fahrenheit);
     p2_humidity = (double)humidity.relative_humidity;
 
     //call the heat index fuction with the new values and set to a variable
@@ -191,6 +191,12 @@ void loop() {
     
     Serial.println("Humidity: " + (String)p2_humidity);
     Serial.println("Temp: " + (String)p2_temperature);
+
+    ubidots.add(UBIVAR_TEMP_F, p2_temperature);
+    ubidots.add(UBIVAR_HUMIDITY, p2_humidity);
+    ubidots.add(UBIVAR_HEAT_INDEX, heatIndex);
+
+    ubidots.send();
 
     //display the temp, humidity, heat index on screen here
     Serial.println("Heat index: " + (String)heatIndex);
@@ -213,16 +219,9 @@ void loop() {
     }
   }  // End of standard runtime loop
   else if (awaiting_first_press) {
-    /* Button has not yet been pressed, flow-of-control should fall here until 
-     the button press has been  received. */
+    //  Button has not yet been pressed, flow-of-control should fall here until 
+    //  the button press has been received. 
     if(isReceivingPureInput()) {  // on first time run: if button pressed...
-
-      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!9510541!!!!!
-      //set the humidity and temperature here
-      //p2_temperature = ...;
-      //p2_humidity = ...;
-      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
       //this sets the inital heat index to the heat 
       //index of when the button was pressed for the first time
       initialHeatIndex = calcHeatIndex(p2_temperature, p2_humidity);

@@ -12,8 +12,9 @@
 #include "btn_utils.h"
 #include "Particle.h"
 
-const int pin_btn = D2;   // pin connected to first button (D2)
+const int pin_btn = D8;   // pin connected to first button (D2)
 // const int pin_btn_right = D3;   // pin connected to button furthest from board (D3)
+
 const int DEBOUNCE_DELAY_MS = 200;  // how many ms to wait before checking
 
 bool awaiting_first_press;
@@ -42,7 +43,6 @@ bool isButtonActive() { return (digitalRead(pin_btn) == LOW); }
 /// Accomplished by performing a second call to isButtonActive
 bool isReceivingPureInput() {
   // first and foremost, get the latest button state
-  // int current_btn_state = isButtonActive() ? LOW : HIGH; 
   bool current_btn_state = isButtonActive(); 
 
   if (current_btn_state != (last_btn_state == HIGH)) {      // has state changed? 
@@ -53,13 +53,11 @@ bool isReceivingPureInput() {
 
   // has NEW state been held for longer than the debounce delay?
   if (millis() - msSinceLastPress > DEBOUNCE_DELAY_MS && current_btn_state) {
-    // Serial.println();
     String debugBtnMsg = !awaiting_first_press ? DEBUG_MSG_PRESSED : DEBUG_MSG_INIT; 
     // additionally verbose output:
     Serial.println(debugBtnMsg);
 
     return true;
   }
-  // Serial.println("ERROR: noise detected")
   return false;
 }

@@ -51,15 +51,6 @@ void setDefaultTempUnit(TemperatureUnit unit);
 /// @returns The temperature reading in the current unit
 double convertTemperature(
   double temperature, TemperatureUnit fromUnit, TemperatureUnit toUnit); 
-
-/// @brief converts a celsius measurement to fahrenheit a one 
-/// @returns the equivalent supplied temperature, in Farenheit
-double convertCelToFar(double temp_celsius);
-
-/// @brief converts a fahrenheit measurement to a celsius one 
-/// @returns the equivalent supplied temperature, in Celsius 
-double convertFarToCel(double temp_farenheit);
-
 /*  [         WIND FUNCTIONS          ] */
 
 /// @brief Calculates the wind chill using the formula

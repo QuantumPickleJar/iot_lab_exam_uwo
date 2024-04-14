@@ -6,5 +6,39 @@
     },
     "particle.firmwareVersion": "5.8.0",
     "particle.targetPlatform": "p2",
-    "particle.targetDevice": "herby"
+    "particle.targetDevice": "aromatic_mole",
+    "git.autofetch": true,
+    "github.copilot.editor.enableAutoCompletions": false,
+    "[cpp]": {
+    //    "editor.wordBasedSuggestions": "off",
+        "editor.suggest.insertMode": "replace",
+        "editor.semanticHighlighting.enabled": true,
+        "editor.quickSuggestions": {
+            "comments": "on",
+            "strings": "on",
+            "other": "on"
+        }
+    },
+    "workbench.settings.applyToAllProfiles": [
+        "editor.columnSelection"
+    ],
+    "settingsSync.ignoredSettings": [
+        "editor.columnSelection"
+    ],
+    "cmake.showOptionsMovedNotification": false,
+    "cmake.configureOnOpen": false,
+    // "dart.openDevTools": "flutter",
+    "doxdocgen.generic.authorName": "Vincent Morrill",
+    // "doxdocgen.generic.authorEmail": "vince.codefactory@outlook.com",
+    "github.copilot.enable": {
+        "yaml": "true"
+    },
+    "[github-actions-workflow]": {
+        "github.copilot.editor.enableAutoCompletions": true
+    },
+    "scm.showOutgoingChanges": "always",
+    "workbench.iconTheme": "vscode-icons",
+    "clangd.path": "c:\\Users\\vince\\AppData\\Roaming\\Code\\User\\globalStorage\\llvm-vs-code-extensions.vscode-clangd\\install\\17.0.3\\clangd_17.0.3\\bin\\clangd.exe",
+    "workbench.colorTheme": "AspieSoft IntelliJ Theme",
+    "C_Cpp.errorSquiggles": "enabled",
 }

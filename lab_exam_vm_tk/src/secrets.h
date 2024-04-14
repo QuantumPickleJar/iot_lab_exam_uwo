@@ -1,0 +1,2 @@
+#define UBIDOTS_API_KEY "BBUS-7cc8da7b4a06e6ae875aedd9e7dac607775",
+#define TOKEN "BBUS-ICIyBOvJ6CMKFotoMxQZcRDDbytRIS"
