@@ -18,10 +18,15 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
 /// These variables are for convenience and add a bit of overhead
 const int buzzer = A2;
+const int SERIAL_DELAY_MS = 5000;
+
+/// @brief timer that allows the cycle to continue without being blocked by a delay call
+uint32_t msIdleTime;    
 
 double p2_humidity, p2_temperature, initialHeatIndex, heatIndex;
 extern bool awaiting_first_press;
 
+/// @brief plays an ascending tone of chirps on the buzzer
 void playAsc() {
 
   tone(buzzer, 523);
@@ -50,6 +55,7 @@ void playAsc() {
   delay(50);
 }
 
+/// @brief plays a descending tone of chirps on the buzzer
 void playDesc() {
 
   tone(buzzer, 784);
@@ -78,6 +84,8 @@ void playDesc() {
   delay(50);
 }
 
+/// @brief plays a static note five times
+/// @todo add an optional parameter
 void playSame() {
 
   tone(buzzer, 523);
@@ -115,14 +123,15 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Is bool valid?");
-
-  Serial.print(awaiting_first_press);
+  // Serial.println("Is bool valid?: " + (String)awaiting_first_press);
 
   //checking to see if we are not waiting for the button press
-  if(!awaiting_first_press) { 
+  if(!awaiting_first_press) {
+    Serial.println("################  /* First press detected! */ ########### ");
+ 
+    // TODO: resume from here
     //get and set the temp
-    //p2_temperature = ...;
+    // p2_temperature = ;
     //get and set the humidity
     //p2_humidity = ...;
 
@@ -131,25 +140,28 @@ void loop() {
 
     //display the temp, humidity, heat index on screen
     //here
+    Serial.println("Heat index: " + (String)heatIndex);
 
     //play buzzer noise
     if(heatIndex > (initialHeatIndex + .5)) {
       //if heat index is greater than initial, play ascending noise
       playAsc();
-
+      Serial.println("Above average!");
     } else if(heatIndex < (initialHeatIndex - .5)) {
       //if heat index is less than initial, play descending noise
       playDesc();
+      Serial.println("Below average!");
 
     } else {
       //if heat index is the same as the initial, play same noise
       playSame();
-
+      Serial.println("About the same!");
     }
 
   //else see if button is pressed and set stuff or just keep waiting
-  } else {
-    Serial.println("Checking for input...");
+  } 
+  else if (awaiting_first_press) {
+    Serial.println("Awaiting input.");
     if(isReceivingPureInput()) {
 
       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!9510541!!!!!
@@ -161,16 +173,20 @@ void loop() {
       //this sets the inital heat index to the heat 
       //index of when the button was pressed for the first time
       initialHeatIndex = calcHeatIndex(p2_temperature, p2_humidity);
-      Serial.println("Heat index: ");
+      Serial.println("Heat index: " + (String)initialHeatIndex);
 
-      Serial.print(initialHeatIndex);
       //setting the wait for first press to be false because we are no longer waiting.
-      // awaiting_first_press = false;
-    } else {
-    Serial.println("No input detected.");
-    }
+      awaiting_first_press = false;
+    } 
+    // else {
+    //   Serial.println("No input detected.");
+    // }
 
   }
-  Serial.println("Systems test");
-  delay(500);
+  
+  if(millis() - msIdleTime > SERIAL_DELAY_MS) {
+    Log.info("Systems nominal.");
+    msIdleTime = millis();    // reset the counter
+  }
+  
 }
