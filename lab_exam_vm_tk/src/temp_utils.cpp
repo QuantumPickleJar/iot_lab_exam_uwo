@@ -35,10 +35,28 @@ TemperatureUnit enforcedUnit = Fahrenheit; // for singular conversion jobs
 // const int pin_temp = A2;    not used here
 const int MOCK_WIND_MAX_SPEED = 20;     // desired ceiling of faked wind speed
 double stored_temp;
+Adafruit_SHT4x sht4 = Adafruit_SHT4x();
 
-void initTemperaturePins()
-{
+void initTemperaturePins() {
   pinMode(pin_temp, AN_INPUT); // since temperature is analog
+}
+
+
+void initSHT40() {
+  Serial.begin(9600);
+    while (!Serial) {
+        delay(10); // will pause Zero, Leonardo, etc until serial console opens
+    }
+
+    Serial.println("Adafruit SHT4x test");
+    if (!sht4.begin()) {
+        Serial.println("Couldn't find SHT4x");
+        while (1) delay(1); // Hold if sensor not found
+    }
+    Serial.println("Found SHT4x sensor");
+    Serial.print("Serial number 0x");
+    Serial.println(sht4.readSerial(), HEX);
+    sht4.setPrecision(SHT4X_HIGH_PRECISION);
 }
 
 /// @brief sets the current temperature unit

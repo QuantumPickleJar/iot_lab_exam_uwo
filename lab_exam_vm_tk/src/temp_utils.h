@@ -16,6 +16,7 @@
 ****/
 #ifndef TEMP_UTILS_H
 #define TEMP_UTILS_H
+#include "Adafruit_SHT4x.h"
 
 extern const int pin_temp;            // pin (A2) reading VOUT pin of TMP36
 extern const int MOCK_WIND_MAX_SPEED; // Since we don't have an anemometer
@@ -23,6 +24,8 @@ extern const int MAX_ANALOG_VAL;      // this should be used in any unit convers
 
 extern const int P2_VOLTAGE_IN_MV; // the voltage supplied to the Photon 2
 extern double stored_temp;     // stores the calcualted reading from pin_temp
+
+extern Adafruit_SHT4x sht4;
 
 enum TemperatureUnit                  // desired units to use in a singular call
 {
@@ -84,6 +87,9 @@ double calcHeatIndex(double temperature, double humidity);
 
 /// @brief returns the temperature in the supplied unit
 double getTemperatureInUnit(TemperatureUnit unit);
+
+/// @brief starts the SHT40 interfacing logic
+void initSHT40();
 
 /// @brief obtains a new reading on the TMP36, in a loop()-friendly format 
 void checkTemp();

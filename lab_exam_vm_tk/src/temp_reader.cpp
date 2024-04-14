@@ -10,12 +10,14 @@
 #include "Particle.h"
 #include "temp_utils.h"
 #include "btn_utils.h"
-#include "Adafruit_SHT4X.h"
+// #include "Adafruit_SHT4x.h"
 
 SYSTEM_MODE(AUTOMATIC);
 SYSTEM_THREAD(ENABLED);
 
 SerialLogHandler logHandler(LOG_LEVEL_INFO);
+
+// extern Adafruit_SHT4x sht4;  // defined in temp_utils
 
 /// These variables are for convenience and add a bit of overhead
 const int buzzer = A2;
@@ -23,6 +25,7 @@ const int SERIAL_DELAY_MS = 5000;
 
 /// @brief timer that allows the cycle to continue without being blocked by a delay call
 uint32_t msIdleTime;    
+
 
 double p2_humidity, p2_temperature, initialHeatIndex, heatIndex;
 extern bool awaiting_first_press;
@@ -120,23 +123,33 @@ void setup() {
 
   //setting waiting for press to be true because we are waiting for it
   // awaiting_first_press = true;
+  initSHT40();
   initButtonPin();
 }
 
 void loop() {
   // Serial.println("Is bool valid?: " + (String)awaiting_first_press);
-
+  // TODO: print "Waiting: to the screen"
   //checking to see if we are not waiting for the button press
+  sensors_event_t humidity, temp;
+  
   if(!awaiting_first_press) {
  
     // TODO: resume from here
     //get and set the temp
-    // p2_temperature = ;
+    uint32_t timestamp = millis();
+    sht4.getEvent(&humidity, &temp);
+    timestamp = millis() - timestamp;
+    
     //get and set the humidity
-    //p2_humidity = ...;
+    p2_temperature = temp.temperature;
+    p2_humidity = (double)humidity.relative_humidity;
 
     //call the heat index fuction with the new values and set to a variable
     heatIndex = calcHeatIndex(p2_temperature, p2_humidity);
+    
+    Serial.println("Humidity: " + (String)p2_humidity);
+    Serial.println("Temp: " + (String)p2_temperature);
 
     //display the temp, humidity, heat index on screen
     //here
