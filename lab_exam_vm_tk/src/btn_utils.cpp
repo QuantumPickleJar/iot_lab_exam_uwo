@@ -38,25 +38,20 @@ bool isButtonActive() { return (digitalRead(pin_btn) == LOW); }
 /// Accomplished by performing a second call to isButtonActive
 bool isReceivingPureInput() {
   // first and foremost, get the latest button state
-  int current_btn_state = isButtonActive() ? LOW : HIGH; 
-  
-  if (last_btn_state != current_btn_state) {      // has state changed? 
+  // int current_btn_state = isButtonActive() ? LOW : HIGH; 
+  bool current_btn_state = isButtonActive(); 
+
+  if (current_btn_state != (last_btn_state == HIGH)) {      // has state changed? 
     // store + reset the timer, so we can evaluate the length of the event
     msSinceLastPress = millis();
+    last_btn_state = current_btn_state ? HIGH : LOW;  // Store the new state
   }
 
   // has NEW state been held for longer than the debounce delay?
-  if (millis() - msSinceLastPress > DEBOUNCE_DELAY_MS) {
-    if (last_btn_state != current_btn_state) {
-      // we separately handle HIGH presses as they're what we're looking for
-      if (current_btn_state == HIGH) {
-        awaiting_first_press = false;    // future presses won't set 
-        Serial.println("Button pressed!");
-        return true;
-      }
-    }
+  if (millis() - msSinceLastPress > DEBOUNCE_DELAY_MS && current_btn_state) {
+    Serial.println("Non-bouncing button push confirmed!");
+    return true;
   }
-  // crucially, we have to set the GLOBALLY tracked member LAST
-  last_btn_state = current_btn_state;
+  // Serial.println("ERROR: noise detected")
   return false;
 }
