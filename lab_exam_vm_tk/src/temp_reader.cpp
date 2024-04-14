@@ -141,7 +141,6 @@ void initScreen() {
 }
 
 
-// <<<<<<< HEAD
 
 /// @brief Prints the temperature information to the OLED screen
 void printTempInfo() {
@@ -151,6 +150,22 @@ void printTempInfo() {
   display.printlnf("HI: %3.1fF", heatIndex);
   display.display();    // don't forget to refresh the display buffer!
 }
+
+// void printAllInfo() {
+
+// /// @brief Prints the player count for TF2 to the OLED screen
+// /// @param displayed_value 
+// void printPlayerCount(int displayed_value) {
+//   display.clearDisplay();      // clear any existing pixels
+//   display.setTextSize(1);      // Normal 1:1 pixel scale
+//   display.setTextColor(WHITE); // Draw white text
+//   display.setCursor(0, 0);     // Start at top-left corner
+  
+//   display.printlnf("There are currently \n%d people on TF2!", displayed_value);
+//   display.display();    // don't forget to refresh the display buffer!
+// }
+
+// }
 
 void setup() {
   // pulled from the example library, won't work without this 
