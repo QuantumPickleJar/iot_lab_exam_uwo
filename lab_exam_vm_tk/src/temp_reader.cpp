@@ -124,29 +124,47 @@ void playSame() {
   delay(50);
 }
 
-
-/// @brief Prints the player count for TF2 to the OLED screen
-/// @param displayed_value 
-void printSingleValue(int displayed_value) {
+void resetScreen(){ 
   display.clearDisplay();      // clear any existing pixels
   display.setTextSize(1);      // Normal 1:1 pixel scale
   display.setTextColor(WHITE); // Draw white text
   display.setCursor(0, 0);     // Start at top-left corner
-  
-  display.println("Checking Steam's API:");
-  
-  display.printlnf("There are currently \n%d people on TF2!", displayed_value);
-  display.display();    // don't forget to refresh the display buffer!
+}
+
+/// @brief Prints a simple msg to the screen to hint to operators that 
+/// their screen is working and not defective
+/// displays "Waiting..." on the screen
+void initScreen() {
+  resetScreen();
+  display.println("Waiting...");
+  display.display();
 }
 
 
+/// @brief Prints the temperature information to the OLED screen
+void printTempInfo() {
+  resetScreen();      // clear the display  
+  display.printlnf("H: %3.1f%%", p2_humidity);
+  display.printlnf("T: %3.1fF", p2_temperature);
+  display.printlnf("HI: %3.1fF", heatIndex);
+  display.display();    // don't forget to refresh the display buffer!
+}
+
 void setup() {
+  // pulled from the example library, won't work without this 
+  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;);  // halt!
+  } 
+
   pinMode(buzzer, AN_OUTPUT);
 
   //setting waiting for press to be true because we are waiting for it
   // awaiting_first_press = true;
   initSHT40();
   initButtonPin();
+  initScreen();
 }
 
 void loop() {
@@ -173,10 +191,10 @@ void loop() {
     Serial.println("Humidity: " + (String)p2_humidity);
     Serial.println("Temp: " + (String)p2_temperature);
 
-    //display the temp, humidity, heat index on screen
-    //here
+    //display the temp, humidity, heat index on screen here
     Serial.println("Heat index: " + (String)heatIndex);
-
+    printTempInfo();
+    
     //play buzzer noise
     if(heatIndex > (initialHeatIndex + .5)) {
       //if heat index is greater than initial, play ascending noise
@@ -196,7 +214,7 @@ void loop() {
   else if (awaiting_first_press) {
     /* Button has not yet been pressed, flow-of-control should fall here until 
      the button press has been  received. */
-    if(isReceivingPureInput()) {
+    if(isReceivingPureInput()) {  // on first time run: if button pressed...
 
       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!9510541!!!!!
       //set the humidity and temperature here
