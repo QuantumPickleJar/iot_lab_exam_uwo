@@ -17,13 +17,15 @@ extern bool awaiting_first_press; // whether or not btn has been pressed since R
 /// @brief sets the PinMode of the button pins to INPUT_PULLUP
 void initButtonPin();
 
-/// @brief checks if the right button is currently being pressed, 
+/// @brief checks if the button is currently being pressed, 
 /// without performing any debounce checks
 /// @return true or false
 bool isButtonActive();
 
-/// @brief checks whether or not the right button is pressed
+/// @brief checks whether or not the button is pressed
 bool isReceivingPureInput();
+
+
 
 #endif
 
