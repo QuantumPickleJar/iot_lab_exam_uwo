@@ -10,7 +10,12 @@
 #include "Particle.h"
 #include "temp_utils.h"
 #include "btn_utils.h"
+#include "Adafruit_SSD1306_RK.h"
 // #include "Adafruit_SHT4x.h"
+
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
 
 SYSTEM_MODE(AUTOMATIC);
 SYSTEM_THREAD(ENABLED);
@@ -18,6 +23,7 @@ SYSTEM_THREAD(ENABLED);
 SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
 // extern Adafruit_SHT4x sht4;  // defined in temp_utils
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 /// These variables are for convenience and add a bit of overhead
 const int buzzer = A2;
@@ -117,6 +123,22 @@ void playSame() {
   noTone(buzzer);
   delay(50);
 }
+
+
+/// @brief Prints the player count for TF2 to the OLED screen
+/// @param displayed_value 
+void printSingleValue(int displayed_value) {
+  display.clearDisplay();      // clear any existing pixels
+  display.setTextSize(1);      // Normal 1:1 pixel scale
+  display.setTextColor(WHITE); // Draw white text
+  display.setCursor(0, 0);     // Start at top-left corner
+  
+  display.println("Checking Steam's API:");
+  
+  display.printlnf("There are currently \n%d people on TF2!", displayed_value);
+  display.display();    // don't forget to refresh the display buffer!
+}
+
 
 void setup() {
   pinMode(buzzer, AN_OUTPUT);
