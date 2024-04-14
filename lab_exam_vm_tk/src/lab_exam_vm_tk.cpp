@@ -10,6 +10,7 @@
 #include "Particle.h"
 #include "temp_utils.h"
 #include "btn_utils.h"
+#include "Adafruit_SHT4X.h"
 
 SYSTEM_MODE(AUTOMATIC);
 SYSTEM_THREAD(ENABLED);
@@ -127,7 +128,6 @@ void loop() {
 
   //checking to see if we are not waiting for the button press
   if(!awaiting_first_press) {
-    Serial.println("################  /* First press detected! */ ########### ");
  
     // TODO: resume from here
     //get and set the temp
@@ -157,11 +157,10 @@ void loop() {
       playSame();
       Serial.println("About the same!");
     }
-
-  //else see if button is pressed and set stuff or just keep waiting
-  } 
+  }  // End of standard runtime loop
   else if (awaiting_first_press) {
-    Serial.println("Awaiting input.");
+    /* Button has not yet been pressed, flow-of-control should fall here until 
+     the button press has been  received. */
     if(isReceivingPureInput()) {
 
       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!9510541!!!!!
@@ -178,15 +177,16 @@ void loop() {
       //setting the wait for first press to be false because we are no longer waiting.
       awaiting_first_press = false;
     } 
-    // else {
-    //   Serial.println("No input detected.");
-    // }
-
-  }
+  } // End of first-time-press "block"
   
   if(millis() - msIdleTime > SERIAL_DELAY_MS) {
-    Log.info("Systems nominal.");
+    String debugMsgHeader = "Systems nominal";
     msIdleTime = millis();    // reset the counter
+    String debugMsg;
+
+    // TEMPORARY: COMMENT BEFORE SUBMITTING
+    // append more to debugMsg if we're still in "first-time" run
+    debugMsg = !awaiting_first_press ? "." : ": Awaiting input.";
+    Log.info(debugMsgHeader + debugMsg); 
   }
-  
 }
